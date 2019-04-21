@@ -1,32 +1,16 @@
-#![allow(warnings)] // remove when error_chain is fixed
+mod netutils;
 
-extern crate reqwest;
-extern crate env_logger;
-#[macro_use]
-extern crate error_chain;
+fn main() -> Result<(), reqwest::Error> {
+    let proxy = reqwest::Proxy::all("socks5h://192.168.31.1:9050")?;
+    let client: reqwest::Client = reqwest::Client::builder().proxy(proxy).build()?;
+    let resp = client.get("http://udds.ru:16016/c").send()?.text()?;
+    println!("{:#?}", resp);
 
-error_chain! {
-    foreign_links {
-        ReqError(reqwest::Error);
-        IoError(std::io::Error);
-    }
-}
+    let resp = reqwest::get("http://5.39.102.29:16016/c")?.text()?;
+    println!("{:#?}", resp);
 
-fn run() -> Result<()> {
-    env_logger::init();
+    let ip = netutils::my_ip()?;
+    println!("{}", ip);
 
-    println!("GET https://www.rust-lang.org");
-
-    let mut res = reqwest::get("https://www.rust-lang.org/en-US/")?;
-
-    println!("Status: {}", res.status());
-    println!("Headers:\n{}", res.headers());
-
-    // copy the response body directly to stdout
-    let _ = std::io::copy(&mut res, &mut std::io::stdout())?;
-
-    println!("\n\nDone.");
     Ok(())
 }
-
-quick_main!(run);
