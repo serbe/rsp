@@ -8,8 +8,8 @@ struct Config {
 
 fn get_config<'a>() -> Config {
     let db = dotenv::var("db")
-        .expect("No found variable db_uri like postgres://postgres@localhost:5433 in environment");
-        let target = dotenv::var("db")
+        .expect("No found variable db like postgres://postgres@localhost:5433 in environment");
+        let target = dotenv::var("target")
         .expect("No found variable target like http://targethost:433/path in environment");
         Config{db, target}
 }

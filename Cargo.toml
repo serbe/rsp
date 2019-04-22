@@ -8,7 +8,10 @@ edition = "2018"
 version = "0.9"
 features = ["socks"]
 
+[dependencies.postgres]
+version = "0.15"
+features = ["with-chrono"]
+
 [dependencies]
 chrono = "0.4"
 dotenv = "0.13"
-postgres = "0.15"
