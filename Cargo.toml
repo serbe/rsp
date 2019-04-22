@@ -2,10 +2,13 @@
 name = "rsp"
 version = "0.1.0"
 authors = ["Valeriy Kostikov <mkoctuk@gmail.com>"]
+edition = "2018"
 
 [dependencies.reqwest]
 version = "0.9"
 features = ["socks"]
 
 [dependencies]
+chrono = "0.4"
 dotenv = "0.13"
+postgres = "0.15"

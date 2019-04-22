@@ -14,18 +14,17 @@ fn get_config<'a>() -> Config {
         Config{db, target}
 }
 
-fn main() -> Result<(), reqwest::Error> {
+fn main() {
     let config = get_config();
-    let proxy = reqwest::Proxy::all("socks5h://192.168.31.1:9050")?;
-    let client: reqwest::Client = reqwest::Client::builder().proxy(proxy).build()?;
-    let resp = client.get("http://udds.ru:16016/c").send()?.text()?;
+    let conn = db::get_connection(&config.db);
+    let proxy = reqwest::Proxy::all("socks5h://192.168.31.1:9050").unwrap();
+    let client: reqwest::Client = reqwest::Client::builder().proxy(proxy).build().unwrap();
+    let resp = client.get("http://udds.ru:16016/c").send().unwrap().text().unwrap();
     println!("{:#?}", resp);
 
-    let resp = reqwest::get("http://5.39.102.29:16016/c")?.text()?;
+    let resp = reqwest::get("http://5.39.102.29:16016/c").unwrap().text().unwrap();
     println!("{:#?}", resp);
 
-    let ip = netutils::my_ip()?;
+    let ip = netutils::my_ip().unwrap();
     println!("{}", ip);
-
-    Ok(())
 }
