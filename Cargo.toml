@@ -15,3 +15,4 @@ features = ["with-chrono"]
 [dependencies]
 chrono = "0.4"
 dotenv = "0.13"
+select = "0.4"
