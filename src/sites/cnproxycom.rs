@@ -1,7 +1,7 @@
 use crate::netutils::crawl;
-use select::predicate::Name;
-use select::document::Document;
 
+use select::document::Document;
+use select::predicate::{Name, Predicate};
 pub fn cnproxycom() -> Vec<String> {
     let mut ips = Vec::new();
     for link in cnproxycom_links() {
@@ -24,7 +24,12 @@ fn cnproxycom_ips(body: &str) -> Vec<String> {
 
     let document = Document::from(body);
 
-    for node in document.find(Name)
+    for node in document.find(Name("tbody").descendant(Name("tr"))) {
+        match (node.find(Name("td")).nth(0), node.find(Name("td")).nth(1)) {
+            (Some(td1), Some(td2)) => ips.push(format!("http://{}:{}", td1.text(), td2.text())),
+            _ => ()
+        }
+    }
     // r := bytes.NewReader(body)
     // dom, err := goquery.NewDocumentFromReader(r)
     // if err != nil {
