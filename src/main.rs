@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 mod db;
 mod netutils;
 mod sites;
@@ -16,11 +18,12 @@ fn get_config() -> Config {
 }
 
 fn main() {
-    let config = get_config();
-    let conn = db::get_connection(&config.db);
+    // let config = get_config();
+    // let conn = db::get_connection(&config.db);
 
-    println!("{:?}", sites::cnproxycom::cnproxycom());
-    let ip = netutils::my_ip().unwrap();
+    // println!("{:?}", sites::cnproxycom::cnproxycom());
+    // println!("{:?}", sites::cybersyndromenet::cybersyndromenet());
+    // let ip = netutils::my_ip().unwrap();
 
-    println!("{}", ip);
+    // println!("{}", ip);
 }
