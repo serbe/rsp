@@ -7,7 +7,7 @@ struct Config {
     target: String,
 }
 
-fn get_config<'a>() -> Config {
+fn get_config() -> Config {
     let db = dotenv::var("db")
         .expect("No found variable db like postgres://postgres@localhost:5433 in environment");
     let target = dotenv::var("target")

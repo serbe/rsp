@@ -26,9 +26,9 @@ fn cnproxycom_ips(body: &str) -> Vec<String> {
     let document = Document::from(body);
 
     for node in document.find(Name("tbody").descendant(Name("tr"))) {
-        match (node.find(Name("td")).nth(0), node.find(Name("td")).nth(1)) {
-            (Some(td1), Some(td2)) => ips.push(format!("http://{}:{}", td1.text(), td2.text())),
-            _ => (),
+        if let (Some(td1), Some(td2)) = (node.find(Name("td")).nth(0), node.find(Name("td")).nth(1))
+        {
+            ips.push(format!("http://{}:{}", td1.text(), td2.text()))
         }
     }
     ips
