@@ -18,10 +18,9 @@ fn get_config() -> Config {
 fn main() {
     let config = get_config();
     let conn = db::get_connection(&config.db);
-    
+
     println!("{:?}", sites::cnproxycom::cnproxycom());
     let ip = netutils::my_ip().unwrap();
 
     println!("{}", ip);
-
 }
