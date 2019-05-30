@@ -144,3 +144,28 @@ pub fn get_all_old_proxy(conn: Connection) -> Vec<Proxy> {
     };
     proxies
 }
+
+pub fn get_n_old_proxy(conn: Connection, num: i64) -> Vec<String> {
+    let mut proxies = Vec::new();
+    if let Ok(rows) = &conn.query(
+        "SELECT
+			hostname
+		FROM
+			proxies
+		WHERE
+			work = true OR update_at < NOW() - (INTERVAL '3 days') * checks
+        ORDER BY
+            update_at DESC
+        LIMIT
+            $1"
+        ,
+        &[&num],
+    ) {
+        for row in rows {
+            if let Some(Ok(hostname)) = row.get_opt(0) {
+                proxies.push(hostname);
+            }
+        }
+    };
+    proxies
+}

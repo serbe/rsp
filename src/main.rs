@@ -1,12 +1,22 @@
 #![allow(dead_code)]
 
+use crate::sites::proxydailycom::proxydailycom;
+use db::get_n_old_proxy;
+
 mod db;
-mod netutils;
+//mod netutils;
 mod sites;
 
 struct Config {
     db: String,
     target: String,
+}
+
+fn post(target: String, data: Vec<String>) {
+    let client = reqwest::Client::new();
+    let _res = client.post(&target)
+        .body(data.join("\n"))
+        .send();
 }
 
 fn get_config() -> Config {
@@ -18,12 +28,14 @@ fn get_config() -> Config {
 }
 
 fn main() {
-    // let config = get_config();
-    // let conn = db::get_connection(&config.db);
+    let config = get_config();
+    let conn = db::get_connection(&config.db);
 
     // println!("{:?}", sites::cnproxycom::cnproxycom());
     // println!("{:?}", sites::cybersyndromenet::cybersyndromenet());
+    // println!("{}", proxydailycom().len());
     // let ip = netutils::my_ip().unwrap();
+    let proxies = get_n_old_proxy(conn, 2000);
 
     // println!("{}", ip);
 }
