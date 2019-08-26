@@ -1,15 +1,15 @@
 use std::fs::File;
 use std::io::Write;
 
-pub fn rot13(text: &str) -> String {
-    text.chars().map(|c| {
-        match c {
-            'A' ... 'M' | 'a' ... 'm' => ((c as u8) + 13) as char,
-            'N' ... 'Z' | 'n' ... 'z' => ((c as u8) - 13) as char,
-            _ => c
-        }
-    }).collect()
-}
+// pub fn rot13(text: &str) -> String {
+//     text.chars().map(|c| {
+//         match c {
+//             'A' ... 'M' | 'a' ... 'm' => ((c as u8) + 13) as char,
+//             'N' ... 'Z' | 'n' ... 'z' => ((c as u8) - 13) as char,
+//             _ => c
+//         }
+//     }).collect()
+// }
 
 //pub fn rotate(src: Vec<String>, num: usize) -> Vec<String> {
 //	let mut s = &src;

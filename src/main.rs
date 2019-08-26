@@ -1,6 +1,7 @@
 #![allow(dead_code)]
+#![allow(unused_imports)]
 
-use crate::sites::proxydailycom::proxydailycom;
+use crate::sites::proxynovacom as g;
 use db::get_n_old_proxy;
 
 mod db;
@@ -28,14 +29,16 @@ fn get_config() -> Config {
 }
 
 fn main() {
-    let config = get_config();
-    let conn = db::get_connection(&config.db);
+    // let config = get_config();
+    // let conn = db::get_connection(&config.db);
 
     // println!("{:?}", sites::cnproxycom::cnproxycom());
     // println!("{:?}", sites::cybersyndromenet::cybersyndromenet());
     // println!("{}", proxydailycom().len());
     // let ip = netutils::my_ip().unwrap();
-    let proxies = get_n_old_proxy(conn, 2000);
+    // let proxies = get_n_old_proxy(conn, 2000);
 
     // println!("{}", ip);
+    let ips = g::get().unwrap();
+    println!("{:?}", ips);
 }
