@@ -3,7 +3,7 @@ use crate::netutils::crawl;
 use select::document::Document;
 use select::predicate::{Name, Predicate};
 
-pub fn cnproxycom() -> Vec<String> {
+pub fn get() -> Result<Vec<String>, String> {
     let mut ips = Vec::new();
     for link in cnproxycom_links() {
         if let Ok(body) = crawl(&link) {
@@ -12,7 +12,7 @@ pub fn cnproxycom() -> Vec<String> {
             }
         }
     }
-    ips
+    Ok(ips)
 }
 
 fn cnproxycom_links() -> Vec<String> {

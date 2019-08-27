@@ -4,7 +4,7 @@ use crate::sites::utils::save;
 use select::document::Document;
 use select::predicate::{Name, Predicate};
 
-pub fn proxydailycom() -> Vec<String> {
+pub fn get() -> Result<Vec<String>, String> {
     let mut ips = Vec::new();
     for link in proxydailycom_links() {
         dbg!(&link);
@@ -20,7 +20,7 @@ pub fn proxydailycom() -> Vec<String> {
             },
         }
     }
-    ips
+    Ok(ips)
 }
 
 fn proxydailycom_links() -> Vec<String> {

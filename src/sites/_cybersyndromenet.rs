@@ -2,7 +2,7 @@ use crate::netutils::crawl;
 
 use regex::Regex;
 
-pub fn cybersyndromenet() -> Vec<String> {
+pub fn get() -> Result<Vec<String>, String> {
     let mut ips = Vec::new();
     for link in cybersyndromenet_links() {
         if let Ok(body) = crawl(&link) {
@@ -11,7 +11,7 @@ pub fn cybersyndromenet() -> Vec<String> {
             }
         }
     }
-    ips
+    Ok(ips)
 }
 
 fn cybersyndromenet_links() -> Vec<String> {
