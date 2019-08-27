@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 #![allow(unused_imports)]
 
-use crate::sites::proxynovacom as g;
+use crate::sites::proxyiplistcom as g;
 use db::get_n_old_proxy;
 
 mod db;

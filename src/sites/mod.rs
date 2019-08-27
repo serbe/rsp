@@ -6,3 +6,6 @@ pub mod utils;
 // pub mod givemeproxycom;
 // pub mod idcloakcom;
 pub mod proxynovacom;
+pub mod duplicheckercom;
+pub mod freeproxylistnet;
+pub mod proxyiplistcom;

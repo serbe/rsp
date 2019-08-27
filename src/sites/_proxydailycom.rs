@@ -1,43 +1,9 @@
-use crate::sites::netutils::crawl;
-use crate::sites::utils::save;
-
-use select::document::Document;
-use select::predicate::{Name, Predicate};
+use super::netutils::crawl;
+use regex::Regex;
 
 pub fn get() -> Result<Vec<String>, String> {
-    let mut ips = Vec::new();
-    for link in proxydailycom_links() {
-        dbg!(&link);
-        match crawl(&link) {
-            Ok(body) => {
-            save("proxydailycom.txt", &body);
-            for ip in proxydailycom_ips(&body) {
-                ips.push(ip);
-            }
-        },
-            Err(e) => {
-                dbg!(e);
-            },
-        }
-    }
-    Ok(ips)
-}
-
-fn proxydailycom_links() -> Vec<String> {
-    let links = vec!["http://proxy-daily.com/".to_string()];
-    links
-}
-
-fn proxydailycom_ips(body: &str) -> Vec<String> {
-    let mut ips = Vec::new();
-
-    let document = Document::from(body);
-
-    for node in document.find(Name("tbody").descendant(Name("tr"))) {
-        if let (Some(td1), Some(td2)) = (node.find(Name("td")).nth(0), node.find(Name("td")).nth(1))
-        {
-            ips.push(format!("http://{}:{}", td1.text(), td2.text()))
-        }
-    }
-    ips
+    let body = crawl("http://proxy-daily.com/").map_err(|e| e.to_string())?;
+    super::utils::save("proxydailycom.html", &body);
+    let re = Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})").map_err(|e| e.to_string())?;
+    Ok(re.captures_iter(&body).map(|cap| format!("{}", &cap[1])).collect())
 }
