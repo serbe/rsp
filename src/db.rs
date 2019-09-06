@@ -157,8 +157,7 @@ pub fn get_n_old_proxy(conn: Connection, num: i64) -> Vec<String> {
         ORDER BY
             update_at DESC
         LIMIT
-            $1"
-        ,
+            $1",
         &[&num],
     ) {
         for row in rows {
