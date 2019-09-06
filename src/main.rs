@@ -1,44 +1,44 @@
-#![allow(dead_code)]
-#![allow(unused_imports)]
+// use db::get_n_old_proxy;
 
-use crate::sites::proxyiplistcom as g;
-use db::get_n_old_proxy;
-
-mod db;
-//mod netutils;
+// mod db;
 mod sites;
 
-struct Config {
-    db: String,
-    target: String,
-}
-
-fn post(target: String, data: Vec<String>) {
-    let client = reqwest::Client::new();
-    let _res = client.post(&target)
-        .body(data.join("\n"))
-        .send();
-}
-
-fn get_config() -> Config {
-    let db = dotenv::var("db")
-        .expect("No found variable db like postgres://postgres@localhost:5433 in environment");
-    let target = dotenv::var("target")
-        .expect("No found variable target like http://targethost:433/path in environment");
-    Config { db, target }
+fn post(target: &str, data: Result<Vec<String>, String>) {
+    if let Ok(list) = data {
+        let client = reqwest::Client::new();
+        let _ = client.post(target).body(list.join("\n")).send();
+    }
 }
 
 fn main() {
-    // let config = get_config();
-    // let conn = db::get_connection(&config.db);
-
-    // println!("{:?}", sites::cnproxycom::cnproxycom());
-    // println!("{:?}", sites::cybersyndromenet::cybersyndromenet());
-    // println!("{}", proxydailycom().len());
-    // let ip = netutils::my_ip().unwrap();
-    // let proxies = get_n_old_proxy(conn, 2000);
-
-    // println!("{}", ip);
-    let ips = g::get().unwrap();
-    println!("{:?}", ips);
+    let target = dotenv::var("target")
+        .expect("No found variable target like http://targethost:433/path in environment");
+    post(&target, sites::cnproxycom::get());
+    post(&target, sites::duplicheckercom::get());
+    post(&target, sites::fakemyipinfo::get());
+    post(&target, sites::freeproxylistcom::get());
+    post(&target, sites::freeproxylistnet::get());
+    post(&target, sites::givemeproxycom::get());
+    post(&target, sites::idcloakcom::get());
+    post(&target, sites::livesocksnet::get());
+    post(&target, sites::mrhinkydinkcom::get());
+    post(&target, sites::myproxycom::get());
+    post(&target, sites::openproxyspace::get());
+    post(&target, sites::proxydailycom::get());
+    post(&target, sites::proxyiplistcom::get());
+    post(&target, sites::proxylistdailynet::get());
+    post(&target, sites::proxynovacom::get());
+    post(&target, sites::socksproxynet::get());
+    post(&target, sites::sslproxiesorg::get());
+    post(&target, sites::usproxyorg::get());
+    post(&target, sites::xicidailicom::get());
+    post(&target, sites::rmccurdycom::get());
+    post(&target, sites::proxylistsnet::get());
+    post(&target, sites::ab57ru::get());
+    post(&target, sites::multiproxyorg::get());
+    post(&target, sites::proxycenterblognet::get());
+    post(&target, sites::atomintersoftcom::get());
+    post(&target, sites::httptunnelge::get());
+    post(&target, sites::globalproxiesblogspotcom::get());
+    post(&target, sites::awmproxycom::get());
 }

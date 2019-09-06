@@ -3,7 +3,20 @@ use regex::Regex;
 
 pub fn get() -> Result<Vec<String>, String> {
     let body = crawl("https://www.free-proxy-list.net/").map_err(|e| e.to_string())?;
-    // super::utils::save("freeproxylistnet.html", &body);
-    let re = Regex::new(r"<td>(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3})</td><td>(\d{2,5})<").map_err(|e| e.to_string())?;
-    Ok(re.captures_iter(&body).map(|cap| format!("{}:{}", &cap[1], &cap[2])).collect())
+    let re = Regex::new(r"<td>(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3})</td><td>(\d{2,5})<")
+        .map_err(|e| e.to_string())?;
+    Ok(re
+        .captures_iter(&body)
+        .map(|cap| format!("{}:{}", &cap[1], &cap[2]))
+        .collect())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_freeproxylistnet() {
+        assert!(get().is_ok());
+    }
 }

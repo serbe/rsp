@@ -3,14 +3,12 @@ use regex::Regex;
 
 pub fn get() -> Result<Vec<String>, String> {
     let urls = vec![
-        "http://proxy-ip-list.com/download/proxy-list-port-3128.txt",
-        "http://proxy-ip-list.com/download/free-usa-proxy-ip.txt",
-        "http://proxy-ip-list.com/download/free-uk-proxy-list.txt",
-        "http://proxy-ip-list.com/download/free-proxy-list.txt",
+        "http://www.atomintersoft.com/high_anonymity_elite_proxy_list",
+        "http://www.atomintersoft.com/anonymous_proxy_list",
     ];
-    let mut list = Vec::new();
     let re =
-        Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})").map_err(|e| e.to_string())?;
+        Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,5})").map_err(|e| e.to_string())?;
+    let mut list = Vec::new();
     for url in urls {
         let body = crawl(url).map_err(|e| e.to_string())?;
         list.append(
@@ -28,7 +26,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_proxyiplistcom() {
+    fn test_atomintersoftcom() {
         assert!(get().is_ok());
     }
 }

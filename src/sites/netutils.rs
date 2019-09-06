@@ -1,13 +1,13 @@
-use rand::thread_rng;
 use rand::seq::SliceRandom;
+use rand::thread_rng;
 
-pub fn my_ip() -> Result<String, reqwest::Error> {
-    reqwest::get("https://api.ipify.org")?.text()
-}
+// pub fn my_ip() -> Result<String, reqwest::Error> {
+//     reqwest::get("https://api.ipify.org")?.text()
+// }
 
-pub fn get_p(target: &str) -> Result<String, reqwest::Error> {
-    reqwest::get(target)?.text()
-}
+// pub fn get_p(target: &str) -> Result<String, reqwest::Error> {
+//     reqwest::get(target)?.text()
+// }
 
 pub fn crawl(link: &str) -> Result<String, String> {
     let ua = vec![
@@ -20,20 +20,21 @@ pub fn crawl(link: &str) -> Result<String, String> {
 	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko)"
 	];
     let mut rng = thread_rng();
-    let rand_ua = ua.choose(&mut rng).ok_or("error get user agent".to_string())?;
+    let rand_ua = ua
+        .choose(&mut rng)
+        .ok_or("error get user agent".to_string())?;
     let client = reqwest::Client::new();
     client
         .get(link)
-        .header(
-            "User-Agent",
-            *rand_ua,
-        )
+        .header("User-Agent", *rand_ua)
         .header("Connection", "close")
         .header(
             "Accept",
             "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         )
         .header("Referer", "https://www.google.com/")
-        .send().map_err(|e| e.to_string())?
-        .text().map_err(|e| e.to_string())
+        .send()
+        .map_err(|e| e.to_string())?
+        .text()
+        .map_err(|e| e.to_string())
 }
