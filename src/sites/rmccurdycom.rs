@@ -2,7 +2,8 @@ use super::netutils::crawl;
 use regex::Regex;
 
 pub fn get() -> Result<Vec<String>, String> {
-    let body = crawl("https://www.rmccurdy.com/scripts/proxy/good.txt").map_err(|e| e.to_string())?;
+    let body =
+        crawl("https://www.rmccurdy.com/scripts/proxy/good.txt").map_err(|e| e.to_string())?;
     let re =
         Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})").map_err(|e| e.to_string())?;
     Ok(re
