@@ -13,7 +13,7 @@ pub fn get() -> Result<Vec<String>, String> {
         list.append(
             &mut re
                 .captures_iter(&body)
-                .map(|cap| format!("{}", &cap[1]))
+                .map(|cap| cap[1].to_string())
                 .collect(),
         );
     }

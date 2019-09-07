@@ -22,7 +22,7 @@ pub fn crawl(link: &str) -> Result<String, String> {
     let mut rng = thread_rng();
     let rand_ua = ua
         .choose(&mut rng)
-        .ok_or("error get user agent".to_string())?;
+        .ok_or_else(|| "error get user agent".to_string())?;
     let client = reqwest::Client::new();
     client
         .get(link)
