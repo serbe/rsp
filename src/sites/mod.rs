@@ -3,6 +3,7 @@
 // pub mod givemeproxycom;
 // pub mod idcloakcom;
 // pub mod proxydailycom;
+// pub mod sslproxiesorg;
 pub mod ab57ru;
 pub mod atomintersoftcom;
 pub mod awmproxycom;
@@ -28,7 +29,6 @@ pub mod proxylistsnet;
 pub mod proxynovacom;
 pub mod rmccurdycom;
 pub mod socksproxynet;
-pub mod sslproxiesorg;
 pub mod usproxyorg;
 pub mod xicidailicom;
 

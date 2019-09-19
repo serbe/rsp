@@ -29,7 +29,7 @@ fn main() {
     post(&target, sites::proxylistdailynet::get());
     post(&target, sites::proxynovacom::get());
     post(&target, sites::socksproxynet::get());
-    post(&target, sites::sslproxiesorg::get());
+    // post(&target, sites::sslproxiesorg::get());
     post(&target, sites::usproxyorg::get());
     post(&target, sites::xicidailicom::get());
     post(&target, sites::rmccurdycom::get());
