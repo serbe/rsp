@@ -2,20 +2,20 @@ use super::netutils::crawl;
 use regex::Regex;
 
 pub fn get() -> Result<Vec<String>, String> {
-    let ports = vec!["3128", "80", "8080"];
+    let schemes = vec!["http", "https", "socks5"];
     let mut list = Vec::new();
-    let re = Regex::new(r"title=\D(\d{2,3})[\.\-](\d{2,3})[\.\-](\d{2,3})[\.\-](\d{2,3})\D")
-        .map_err(|e| e.to_string())?;
-    for port in ports {
+    let re =
+        Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})").map_err(|e| e.to_string())?;
+    for scheme in schemes {
         let body = crawl(&format!(
-            "https://www.proxynova.com/proxy-server-list/port-{}/",
-            &port
+            "https://www.proxy-list.download/api/v1/get?type={}",
+            &scheme
         ))
         .map_err(|e| e.to_string())?;
         list.append(
             &mut re
                 .captures_iter(&body)
-                .map(|cap| format!("{}.{}.{}.{}:{}", &cap[1], &cap[2], &cap[3], &cap[4], port))
+                .map(|cap| format!("{}://{}", &scheme, cap[1].to_string()))
                 .collect(),
         );
     }
@@ -27,7 +27,7 @@ mod tests {
     use super::get;
 
     #[test]
-    fn test_proxynovacom() {
+    fn test_proxylistdownload() {
         let r = get();
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);

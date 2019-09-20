@@ -1,15 +1,20 @@
-use super::netutils::crawl;
 use regex::Regex;
 
+use super::netutils::crawl;
+
 pub fn get() -> Result<Vec<String>, String> {
-    let body_url = crawl("https://www.proxylistdaily.net/").map_err(|e| e.to_string())?;
-    let re_url = Regex::new(r"(https://www.proxylistdaily.net/p/\w.+?\d{4,6}.html)")
+    let body = crawl("https://webanetlabs.net/publ/24").map_err(|e| e.to_string())?;
+    let re_url = Regex::new(r#"href="(/freeproxyweb/proxylist_at_\d{2}\.\d{2}.\d{4}.txt)"#)
         .map_err(|e| e.to_string())?;
     let re =
         Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})").map_err(|e| e.to_string())?;
     let mut list = Vec::new();
-    for cap_url in re_url.captures_iter(&body_url) {
-        let body = crawl(&cap_url[1]).map_err(|e| e.to_string())?;
+    let links: Vec<String> = re_url
+        .captures_iter(&body)
+        .map(|cap| format!("https://webanetlabs.net/{}", &cap[1]))
+        .collect();
+    for link in links {
+        let body = crawl(&link).map_err(|e| e.to_string())?;
         list.append(
             &mut re
                 .captures_iter(&body)
@@ -25,7 +30,7 @@ mod tests {
     use super::get;
 
     #[test]
-    fn test_proxylistdailynet() {
+    fn test_webanetlabsnet() {
         let r = get();
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);

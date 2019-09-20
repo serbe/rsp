@@ -14,10 +14,12 @@ pub fn get() -> Result<Vec<String>, String> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::get;
 
     #[test]
     fn test_httptunnelge() {
-        assert!(get().is_ok());
+        let r = get();
+        assert!(r.is_ok());
+        assert!(r.unwrap().len() > 0);
     }
 }

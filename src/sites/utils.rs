@@ -1,5 +1,5 @@
-// use std::fs::File;
-// use std::io::Write;
+use std::fs::File;
+use std::io::Write;
 
 // pub fn rot13(text: &str) -> String {
 //     text.chars().map(|c| {
@@ -17,7 +17,8 @@
 //	s.to_vec()
 //}
 
-// pub fn save(name: &str, body: &str) -> std::io::Result<()> {
-//     let mut file = File::create(name)?;
-//     file.write_all(body.as_bytes())
-// }
+#[allow(dead_code)]
+pub fn save(name: &str, body: &str) -> std::io::Result<()> {
+    let mut file = File::create(name)?;
+    file.write_all(body.as_bytes())
+}
