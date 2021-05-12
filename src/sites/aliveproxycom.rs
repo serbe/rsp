@@ -1,7 +1,8 @@
 use super::netutils::crawl;
+use crate::error::RspError;
 use regex::Regex;
 
-pub fn get() -> Result<Vec<String>, String> {
+pub async fn get() -> Result<Vec<String>, RspError> {
     let urls = vec![
         "http://www.aliveproxy.com/socks5-list",
         "http://www.aliveproxy.com/high-anonymity-proxy-list",
@@ -21,10 +22,9 @@ pub fn get() -> Result<Vec<String>, String> {
         "http://www.aliveproxy.com/proxy-list-port-8080",
     ];
     let mut list = Vec::new();
-    let re =
-        Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})").map_err(|e| e.to_string())?;
+    let re = Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})")?;
     for url in urls {
-        let body = crawl(url).map_err(|e| e.to_string())?;
+        let body = crawl(url).await?;
         list.append(
             &mut re
                 .captures_iter(&body)
@@ -39,9 +39,9 @@ pub fn get() -> Result<Vec<String>, String> {
 mod tests {
     use super::get;
 
-    #[test]
-    fn test_aliveproxycom() {
-        let r = get();
+    #[tokio::test]
+    async fn test_aliveproxycom() {
+        let r = get().await;
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);
     }

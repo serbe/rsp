@@ -1,7 +1,8 @@
 use super::netutils::crawl;
+use crate::error::RspError;
 use regex::Regex;
 
-pub fn get() -> Result<Vec<String>, String> {
+pub async fn get() -> Result<Vec<String>, RspError> {
     let urls = vec![
         "https://www.xicidaili.com/nn/1",
         "https://www.xicidaili.com/nn/2",
@@ -11,11 +12,10 @@ pub fn get() -> Result<Vec<String>, String> {
         "https://www.xicidaili.com/nn/6",
         "https://www.xicidaili.com/nn/7",
     ];
-    let re = Regex::new(r"<td>(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3})</td>\n<td>(\d{2,5})<")
-        .map_err(|e| e.to_string())?;
+    let re = Regex::new(r"<td>(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3})</td>\n<td>(\d{2,5})<")?;
     let mut list = Vec::new();
     for url in urls {
-        let body = crawl(url).map_err(|e| e.to_string())?;
+        let body = crawl(url).await?;
         list.append(
             &mut re
                 .captures_iter(&body)
@@ -30,9 +30,9 @@ pub fn get() -> Result<Vec<String>, String> {
 mod tests {
     use super::get;
 
-    #[test]
-    fn test_xicidailicom() {
-        let r = get();
+    #[tokio::test]
+    async fn test_xicidailicom() {
+        let r = get().await;
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);
     }

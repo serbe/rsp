@@ -1,10 +1,10 @@
 use super::netutils::crawl;
+use crate::error::RspError;
 use regex::Regex;
 
-pub fn get() -> Result<Vec<String>, String> {
-    let body = crawl("http://ab57.ru/downloads/proxylist.txt").map_err(|e| e.to_string())?;
-    let re =
-        Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})").map_err(|e| e.to_string())?;
+pub async fn get() -> Result<Vec<String>, RspError> {
+    let body = crawl("http://ab57.ru/downloads/proxylist.txt").await?;
+    let re = Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})")?;
     Ok(re
         .captures_iter(&body)
         .map(|cap| cap[1].to_string())
@@ -15,9 +15,9 @@ pub fn get() -> Result<Vec<String>, String> {
 mod tests {
     use super::get;
 
-    #[test]
-    fn test_ab57ru() {
-        let r = get();
+    #[tokio::test]
+    async fn test_ab57ru() {
+        let r = get().await;
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);
     }

@@ -3,7 +3,7 @@
 // use select::document::Document;
 // use select::predicate::{Name, Predicate};
 
-// pub fn get() -> Result<Vec<String>, String> {
+// pub async fn get() -> Result<Vec<String>, RspError> {
 //     let mut ips = Vec::new();
 //     for link in coolproxynet_links() {
 //         if let Ok(body) = crawl(&link) {

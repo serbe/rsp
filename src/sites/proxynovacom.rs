@@ -1,17 +1,17 @@
 use super::netutils::crawl;
+use crate::error::RspError;
 use regex::Regex;
 
-pub fn get() -> Result<Vec<String>, String> {
+pub async fn get() -> Result<Vec<String>, RspError> {
     let ports = vec!["3128", "80", "8080"];
     let mut list = Vec::new();
-    let re = Regex::new(r"title=\D(\d{2,3})[\.\-](\d{2,3})[\.\-](\d{2,3})[\.\-](\d{2,3})\D")
-        .map_err(|e| e.to_string())?;
+    let re = Regex::new(r"title=\D(\d{2,3})[\.\-](\d{2,3})[\.\-](\d{2,3})[\.\-](\d{2,3})\D")?;
     for port in ports {
         let body = crawl(&format!(
             "https://www.proxynova.com/proxy-server-list/port-{}/",
             &port
         ))
-        .map_err(|e| e.to_string())?;
+        .await?;
         list.append(
             &mut re
                 .captures_iter(&body)
@@ -26,9 +26,9 @@ pub fn get() -> Result<Vec<String>, String> {
 mod tests {
     use super::get;
 
-    #[test]
-    fn test_proxynovacom() {
-        let r = get();
+    #[tokio::test]
+    async fn test_proxynovacom() {
+        let r = get().await;
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);
     }

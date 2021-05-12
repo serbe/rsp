@@ -1,13 +1,12 @@
 use super::netutils::crawl;
+use crate::error::RspError;
 use regex::Regex;
 
-pub fn get() -> Result<Vec<String>, String> {
-    let body =
-        crawl("https://www.duplichecker.com/free-proxy-list.php").map_err(|e| e.to_string())?;
+pub async fn get() -> Result<Vec<String>, RspError> {
+    let body = crawl("https://www.duplichecker.com/free-proxy-list.php").await?;
     let re = Regex::new(
         r"<div\s.+?>(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3})</div>\n<div\s.+?>(\d{2,4})</div>",
-    )
-    .map_err(|e| e.to_string())?;
+    )?;
     Ok(re
         .captures_iter(&body)
         .map(|cap| format!("{}:{}", &cap[1], &cap[2]))
@@ -18,9 +17,9 @@ pub fn get() -> Result<Vec<String>, String> {
 mod tests {
     use super::get;
 
-    #[test]
-    fn test_duplicheckercom() {
-        let r = get();
+    #[tokio::test]
+    async fn test_duplicheckercom() {
+        let r = get().await;
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);
     }

@@ -1,15 +1,14 @@
 use super::netutils::crawl;
+use crate::error::RspError;
 use regex::Regex;
 
-pub fn get() -> Result<Vec<String>, String> {
-    let body_url = crawl("https://www.proxylistdaily.net/").map_err(|e| e.to_string())?;
-    let re_url = Regex::new(r"(https://www.proxylistdaily.net/p/\w.+?\d{4,6}.html)")
-        .map_err(|e| e.to_string())?;
-    let re =
-        Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})").map_err(|e| e.to_string())?;
+pub async fn get() -> Result<Vec<String>, RspError> {
+    let body_url = crawl("https://www.proxylistdaily.net/").await?;
+    let re_url = Regex::new(r"(https://www.proxylistdaily.net/p/\w.+?\d{4,6}.html)")?;
+    let re = Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})")?;
     let mut list = Vec::new();
     for cap_url in re_url.captures_iter(&body_url) {
-        let body = crawl(&cap_url[1]).map_err(|e| e.to_string())?;
+        let body = crawl(&cap_url[1]).await?;
         list.append(
             &mut re
                 .captures_iter(&body)
@@ -24,9 +23,9 @@ pub fn get() -> Result<Vec<String>, String> {
 mod tests {
     use super::get;
 
-    #[test]
-    fn test_proxylistdailynet() {
-        let r = get();
+    #[tokio::test]
+    async fn test_proxylistdailynet() {
+        let r = get().await;
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);
     }
