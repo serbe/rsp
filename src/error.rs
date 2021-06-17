@@ -1,9 +1,9 @@
 #[derive(Debug, thiserror::Error)]
 pub enum RspError {
-    #[error("Executing DB query: {0}")]
-    PgError(#[from] tokio_postgres::Error),
-    #[error("Deadpool: {0}")]
-    PoolError(#[from] deadpool_postgres::PoolError),
+    // #[error("Executing DB query: {0}")]
+    // PgError(#[from] tokio_postgres::Error),
+    // #[error("Deadpool: {0}")]
+    // PoolError(#[from] deadpool_postgres::PoolError),
     #[error("Not get user agent")]
     EmptyUserAgent,
     #[error("Unsupported version {0}")]

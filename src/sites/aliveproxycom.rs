@@ -24,13 +24,14 @@ pub async fn get() -> Result<Vec<String>, RspError> {
     let mut list = Vec::new();
     let re = Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})")?;
     for url in urls {
-        let body = crawl(url).await?;
-        list.append(
-            &mut re
-                .captures_iter(&body)
-                .map(|cap| cap[1].to_string())
-                .collect(),
-        );
+        if let Ok(body) = crawl(url).await {
+            list.append(
+                &mut re
+                    .captures_iter(&body)
+                    .map(|cap| cap[1].to_string())
+                    .collect(),
+            );
+        }
     }
     Ok(list)
 }
