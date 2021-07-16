@@ -11,6 +11,7 @@ pub async fn get() -> Result<Vec<String>, RspError> {
         .captures_iter(&body)
         .map(|cap| format!("https://webanetlabs.net/{}", &cap[1]))
         .collect();
+    dbg!(&links);
     for link in links {
         let body = crawl(&link).await?;
         list.append(
@@ -31,6 +32,6 @@ mod tests {
     async fn test_webanetlabsnet() {
         let r = get().await;
         assert!(r.is_ok());
-        assert!(r.unwrap().len() > 0);
+        assert!(dbg!(r.unwrap().len()) > 0);
     }
 }

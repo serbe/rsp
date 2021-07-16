@@ -30,10 +30,12 @@ pub enum RspError {
     RequestLineToBig,
     #[error("Parse int")]
     ParseInt(#[from] std::num::ParseIntError),
-    #[error("Netc: {0}")]
-    FromNetc(#[from] netc::Error),
+    // #[error("Netc: {0}")]
+    // FromNetc(#[from] netc::Error),
     #[error("Regex {0}")]
     FromRegex(#[from] regex::Error),
+    #[error("Reqwest: {0}")]
+    FromReqwest(#[from] reqwest::Error),
 }
 
 impl From<RspError> for std::io::Error {

@@ -1,7 +1,7 @@
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 
-use netc::Client;
+use reqwest::Client;
 
 use crate::error::RspError;
 
@@ -25,7 +25,7 @@ pub async fn crawl(link: &str) -> Result<String, RspError> {
 	];
     let mut rng = thread_rng();
     let rand_ua = *ua.choose(&mut rng).ok_or(RspError::EmptyUserAgent)?;
-    let mut client = Client::builder()
+    let client = Client::new()
         .get(link)
         .header("User-Agent", rand_ua)
         .header("Connection", "close")
@@ -33,8 +33,11 @@ pub async fn crawl(link: &str) -> Result<String, RspError> {
             "Accept",
             "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         )
-        .header("Referer", "https://www.google.com/")
-        .build()
-        .await?;
-    Ok(client.send().await?.text()?)
+        .header("Referer", "https://www.google.com/");
+    // dbg!(&client);
+    let response = client.send().await;
+    // dbg!(&response);
+    let body = response?.text().await;
+    // dbg!(&body);
+    Ok(body?)
 }

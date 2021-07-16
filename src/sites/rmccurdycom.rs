@@ -19,6 +19,6 @@ mod tests {
     async fn test_rmccurdycom() {
         let r = get().await;
         assert!(r.is_ok());
-        assert!(r.unwrap().len() > 0);
+        assert!(dbg!(r.unwrap().len()) > 0);
     }
 }
