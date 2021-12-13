@@ -2,8 +2,8 @@ use super::netutils::crawl;
 use crate::error::RspError;
 use regex::Regex;
 
-pub async fn get() -> Result<Vec<String>, RspError> {
-    let body = crawl("http://www.idcloak.com/proxylist/free-us-proxy-list.html").await?;
+pub fn get() -> Result<Vec<String>, RspError> {
+    let body = crawl("http://www.idcloak.com/proxylist/free-us-proxy-list.html")?;
     let re = Regex::new(r"<td>(\d{2,5})</td><td>(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3})</td>")?;
     Ok(re
         .captures_iter(&body)
@@ -17,7 +17,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_idcloakcom() {
-        let r = get().await;
+        let r = get();
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);
     }

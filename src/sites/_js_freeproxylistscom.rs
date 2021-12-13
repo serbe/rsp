@@ -4,7 +4,7 @@ use regex::Regex;
 use super::netutils::crawl;
 use super::utils::save;
 
-pub async fn get() -> Result<Vec<String>, RspError> {
+pub fn get() -> Result<Vec<String>, RspError> {
     // let exp = Regex::new(r"href\s*=\s*['"](?P<t>[^'"]*)/(?P<uts>\d{10})[^'"]*['"]").unnwrap();
     let urls = vec![
         "http://www.freeproxylists.com/socks.html",
@@ -15,7 +15,7 @@ pub async fn get() -> Result<Vec<String>, RspError> {
     let re_url =
         Regex::new(r#"href\s*=\s*['"]([^'"]*/\d{10})[^'"]*['"]"#)?;
     for url in urls {
-        let body = crawl(url).await?;
+        let body = crawl(url)?;
         let links: Vec<String> = re_url
             .captures_iter(&body)
             .map(|cap| format!("http://www.freeproxylists.com/{}", &cap[1]))
@@ -40,7 +40,7 @@ mod tests {
         let body = crawl("http://www.freeproxylists.com/socks/d1568968223.html").unwrap();
         let r = save("freeproxylistscom.html", &body);
         println!("{:?}", r);
-        // let r = get().await;
+        // let r = get();
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);
         assert!(true);

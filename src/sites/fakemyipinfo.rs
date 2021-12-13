@@ -2,7 +2,7 @@ use super::netutils::crawl;
 use crate::error::RspError;
 use regex::Regex;
 
-pub async fn get() -> Result<Vec<String>, RspError> {
+pub fn get() -> Result<Vec<String>, RspError> {
     let urls = vec![
         "http://www.fakemyip.info/elite-proxies",
         "http://www.fakemyip.info/anonymous-proxies",
@@ -11,7 +11,7 @@ pub async fn get() -> Result<Vec<String>, RspError> {
     let re = Regex::new(r"<td>(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3})</td><td>(\d{2,5})<")?;
     let mut list = Vec::new();
     for url in urls {
-        let body = crawl(url).await?;
+        let body = crawl(url)?;
         list.append(
             &mut re
                 .captures_iter(&body)
@@ -28,7 +28,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_duplicheckercom() {
-        let r = get().await;
+        let r = get();
         assert!(r.is_ok());
         assert!(dbg!(r.unwrap().len()) > 0);
     }

@@ -2,7 +2,7 @@ use super::netutils::crawl;
 use crate::error::RspError;
 use regex::Regex;
 
-pub async fn get() -> Result<Vec<String>, RspError> {
+pub fn get() -> Result<Vec<String>, RspError> {
     let urls = vec![
         "https://www.my-proxy.com/free-transparent-proxy.html",
         "https://www.my-proxy.com/free-anonymous-proxy.html",
@@ -13,7 +13,7 @@ pub async fn get() -> Result<Vec<String>, RspError> {
     let mut list = Vec::new();
     let re = Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})")?;
     for url in urls {
-        let body = crawl(url).await?;
+        let body = crawl(url)?;
         list.append(
             &mut re
                 .captures_iter(&body)
@@ -30,7 +30,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_myproxycom() {
-        let r = get().await;
+        let r = get();
         assert!(r.is_ok());
         assert!(dbg!(r.unwrap().len()) > 0);
     }

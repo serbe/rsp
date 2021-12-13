@@ -3,8 +3,8 @@ use regex::Regex;
 use super::netutils::crawl;
 use super::utils::save;
 
-pub async fn get() -> Result<Vec<String>, RspError> {
-    let body = crawl("https://checkerproxy.net").await?;
+pub fn get() -> Result<Vec<String>, RspError> {
+    let body = crawl("https://checkerproxy.net")?;
     let re_url = Regex::new(r#"href="(/freeproxyweb/proxylist_at_\d{2}\.\d{2}.\d{4}.txt)"#)
         ?;
     let re =
@@ -31,7 +31,7 @@ mod tests {
     async fn test_checkerproxynet() {
         let body = crawl("https://checkerproxy.net").unwrap();
         save("checkerproxynet.html", &body);
-        // let r = get().await;
+        // let r = get();
         assert!(r.is_ok());
         assert!(r.unwrap().len() > 0);
         assert!(true);
