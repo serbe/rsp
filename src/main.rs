@@ -15,9 +15,9 @@ fn run() -> Result<(), RspError> {
         .expect("No found variable target like http://targethost:433/path in environment");
     post(&target, sites::ab57ru::get()?)?;
     post(&target, sites::aliveproxycom::get()?)?;
-    post(&target, sites::apifoxtoolsru::get()?)?;
+    // post(&target, sites::apifoxtoolsru::get()?)?;
     post(&target, sites::atomintersoftcom::get()?)?;
-    post(&target, sites::awmproxycom::get()?)?;
+    // post(&target, sites::awmproxycom::get()?)?;
     // post(&target, sites::_cnproxycom::get()?)?;
     // post(&target, sites::duplicheckercom::get()?)?;
     post(&target, sites::fakemyipinfo::get()?)?;
@@ -27,8 +27,8 @@ fn run() -> Result<(), RspError> {
     post(&target, sites::globalproxiesblogspotcom::get()?)?;
     post(&target, sites::httptunnelge::get()?)?;
     // post(&target, sites::_idcloakcom::get()?)?;
-    post(&target, sites::livesocksnet::get()?)?;
-    post(&target, sites::mrhinkydinkcom::get()?)?;
+    // post(&target, sites::livesocksnet::get()?)?;
+    // post(&target, sites::mrhinkydinkcom::get()?)?;
     post(&target, sites::multiproxyorg::get()?)?;
     post(&target, sites::myproxycom::get()?)?;
     // post(&target, sites::openproxyspace::get()?)?;
@@ -37,7 +37,7 @@ fn run() -> Result<(), RspError> {
     // post(&target, sites::_proxyiplistcom::get()?)?;
     // post(&target, sites::_proxylistdailynet::get()?)?;
     post(&target, sites::proxylistdownload::get()?)?;
-    post(&target, sites::proxylistsnet::get()?)?;
+    // post(&target, sites::proxylistsnet::get()?)?;
     post(&target, sites::proxynovacom::get()?)?;
     post(&target, sites::rmccurdycom::get()?)?;
     post(&target, sites::socksproxynet::get()?)?;

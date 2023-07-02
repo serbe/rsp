@@ -9,7 +9,7 @@ pub fn get() -> Result<Vec<String>, RspError> {
     let mut list = Vec::new();
     let links: Vec<String> = re_url
         .captures_iter(&body)
-        .map(|cap| format!("https://webanetlabs.net/{}", &cap[1]))
+        .map(|cap| format!("https://webanetlabs.net{}", &cap[1]))
         .collect();
     for link in links {
         let body = crawl(&link)?;
