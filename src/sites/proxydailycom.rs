@@ -2,8 +2,8 @@ use super::netutils::crawl;
 use crate::error::RspError;
 use regex::Regex;
 
-pub fn get() -> Result<Vec<String>, RspError> {
-    let body = crawl("https://proxy-daily.com/")?;
+pub async fn get() -> Result<Vec<String>, RspError> {
+    let body = crawl("https://proxy-daily.com/").await?;
     let re = Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})")?;
     Ok(re
         .captures_iter(&body)
@@ -17,7 +17,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_proxydailycom() {
-        let r = get();
+        let r = get().await;
         assert!(r.is_ok());
         assert!(dbg!(r.unwrap().len()) > 0);
     }

@@ -2,8 +2,8 @@ use super::netutils::crawl;
 use crate::error::RspError;
 use regex::Regex;
 
-pub fn get() -> Result<Vec<String>, RspError> {
-    let body = crawl("https://webanetlabs.net/publ/24")?;
+pub async fn get() -> Result<Vec<String>, RspError> {
+    let body = crawl("https://webanetlabs.net/publ/24").await?;
     let re_url = Regex::new(r#"href="(/proxylist.*\.html)"#)?;
     let re = Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,4})")?;
     let mut list = Vec::new();
@@ -12,7 +12,7 @@ pub fn get() -> Result<Vec<String>, RspError> {
         .map(|cap| format!("https://webanetlabs.net{}", &cap[1]))
         .collect();
     for link in links {
-        let body = crawl(&link)?;
+        let body = crawl(&link).await?;
         list.append(
             &mut re
                 .captures_iter(&body)
@@ -29,7 +29,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_webanetlabsnet() {
-        let r = get();
+        let r = get().await;
         assert!(r.is_ok());
         assert!(dbg!(r.unwrap().len()) > 0);
     }

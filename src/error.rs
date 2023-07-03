@@ -36,8 +36,8 @@ pub enum RspError {
     FromRegex(#[from] regex::Error),
     // #[error("Reqwest: {0}")]
     // FromReqwest(#[from] reqwest::Error),
-    #[error("Ureq: {0}")]
-    FromUreq(#[from] ureq::Error),
+    #[error("Netc: {0}")]
+    FromUreq(#[from] netc::Error),
 }
 
 impl From<RspError> for std::io::Error {

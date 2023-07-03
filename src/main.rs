@@ -1,53 +1,64 @@
 use error::RspError;
+use netc::Client;
+use tokio::runtime::Runtime;
 
 // mod client;
 // mod codec;
 mod error;
 mod sites;
 
-fn post(target: &str, data: Vec<String>) -> Result<(), RspError> {
-    ureq::post(target).send_string(&data.join("\n"))?;
+async fn post(target: &str, data: Vec<String>) -> Result<(), RspError> {
+    Client::builder()
+        .post(target)
+        .body(data.join("\n"))
+        .build()
+        .await?
+        .send()
+        .await?;
     Ok(())
 }
 
-fn run() -> Result<(), RspError> {
+async fn run() -> Result<(), RspError> {
     let target = dotenv::var("target")
         .expect("No found variable target like http://targethost:433/path in environment");
-    post(&target, sites::ab57ru::get()?)?;
-    post(&target, sites::aliveproxycom::get()?)?;
-    // post(&target, sites::apifoxtoolsru::get()?)?;
-    post(&target, sites::atomintersoftcom::get()?)?;
-    // post(&target, sites::awmproxycom::get()?)?;
-    // post(&target, sites::_cnproxycom::get()?)?;
-    // post(&target, sites::duplicheckercom::get()?)?;
-    post(&target, sites::fakemyipinfo::get()?)?;
-    post(&target, sites::freeproxylistcom::get()?)?;
-    post(&target, sites::freeproxylistnet::get()?)?;
-    // post(&target, sites::_givemeproxycom::get()?)?;
-    post(&target, sites::globalproxiesblogspotcom::get()?)?;
-    post(&target, sites::httptunnelge::get()?)?;
-    // post(&target, sites::_idcloakcom::get()?)?;
-    // post(&target, sites::livesocksnet::get()?)?;
-    // post(&target, sites::mrhinkydinkcom::get()?)?;
-    post(&target, sites::multiproxyorg::get()?)?;
-    post(&target, sites::myproxycom::get()?)?;
-    // post(&target, sites::openproxyspace::get()?)?;
-    post(&target, sites::proxycenterblognet::get()?)?;
-    post(&target, sites::proxydailycom::get()?)?;
-    // post(&target, sites::_proxyiplistcom::get()?)?;
-    // post(&target, sites::_proxylistdailynet::get()?)?;
-    post(&target, sites::proxylistdownload::get()?)?;
-    // post(&target, sites::proxylistsnet::get()?)?;
-    post(&target, sites::proxynovacom::get()?)?;
-    post(&target, sites::rmccurdycom::get()?)?;
-    post(&target, sites::socksproxynet::get()?)?;
-    post(&target, sites::sslproxiesorg::get()?)?;
-    post(&target, sites::usproxyorg::get()?)?;
-    post(&target, sites::webanetlabsnet::get()?)?;
-    // post(&target, sites::_xicidailicom::get()?)?;
+    post(&target, sites::ab57ru::get().await?).await?;
+    post(&target, sites::aliveproxycom::get().await?).await?;
+    // post(&target, sites::apifoxtoolsru::get().await?)?;
+    post(&target, sites::atomintersoftcom::get().await?).await?;
+    // post(&target, sites::awmproxycom::get().await?)?;
+    // post(&target, sites::_cnproxycom::get().await?)?;
+    // post(&target, sites::duplicheckercom::get().await?)?;
+    post(&target, sites::fakemyipinfo::get().await?).await?;
+    post(&target, sites::freeproxylistcom::get().await?).await?;
+    post(&target, sites::freeproxylistnet::get().await?).await?;
+    // post(&target, sites::_givemeproxycom::get().await?)?;
+    post(&target, sites::globalproxiesblogspotcom::get().await?).await?;
+    // post(&target, sites::httptunnelge::get().await?).await?;
+    // post(&target, sites::_idcloakcom::get().await?)?;
+    // post(&target, sites::livesocksnet::get().await?)?;
+    // post(&target, sites::mrhinkydinkcom::get().await?)?;
+    post(&target, sites::multiproxyorg::get().await?).await?;
+    post(&target, sites::myproxycom::get().await?).await?;
+    // post(&target, sites::openproxyspace::get().await?)?;
+    post(&target, sites::proxycenterblognet::get().await?).await?;
+    post(&target, sites::proxydailycom::get().await?).await?;
+    // post(&target, sites::_proxyiplistcom::get().await?)?;
+    // post(&target, sites::_proxylistdailynet::get().await?)?;
+    post(&target, sites::proxylistdownload::get().await?).await?;
+    // post(&target, sites::proxylistsnet::get().await?)?;
+    post(&target, sites::proxynovacom::get().await?).await?;
+    post(&target, sites::rmccurdycom::get().await?).await?;
+    post(&target, sites::socksproxynet::get().await?).await?;
+    post(&target, sites::sslproxiesorg::get().await?).await?;
+    post(&target, sites::usproxyorg::get().await?).await?;
+    post(&target, sites::webanetlabsnet::get().await?).await?;
+    // post(&target, sites::_xicidailicom::get().await?)?;
     Ok(())
 }
 
 fn main() {
-    run().unwrap();
+    let rt = Runtime::new().unwrap();
+    rt.block_on(async {
+        run().await.unwrap();
+    })
 }

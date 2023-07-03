@@ -3,7 +3,7 @@
 // use select::document::Document;
 // use select::predicate::{Name, Predicate};
 
-// pub fn get() -> Result<Vec<String>, RspError> {
+// pub async fn get() -> Result<Vec<String>, RspError> {
 //     let mut ips = Vec::new();
 //     for link in coolproxynet_links() {
 //         if let Ok(body) = crawl(&link) {
@@ -16,7 +16,7 @@
 // }
 
 // fn coolproxynet_links() -> Vec<String> {
-//     let links = vec!["https://www.cool-proxy.net/proxies/http_proxy_list/sort:score/direction:desc/page:1".to_string(), "https://www.cool-proxy.net/proxies/http_proxy_list/sort:score/direction:desc/page:2".to_string(), "https://www.cool-proxy.net/proxies/http_proxy_list/sort:score/direction:desc/page:3".to_string(), "https://www.cool-proxy.net/proxies/http_proxy_list/sort:score/direction:desc/page:4".to_string()];
+//     let links = vec!["https://www.cool-proxy.net/".to_string(), "https://www.cool-proxy.net/proxies/http_proxy_list/sort:score/direction:desc/page:2".to_string(), "https://www.cool-proxy.net/proxies/http_proxy_list/sort:score/direction:desc/page:3".to_string(), "https://www.cool-proxy.net/proxies/http_proxy_list/sort:score/direction:desc/page:4".to_string()];
 //     links
 // }
 

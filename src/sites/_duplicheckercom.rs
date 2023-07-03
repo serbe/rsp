@@ -2,7 +2,7 @@ use super::netutils::crawl;
 use crate::error::RspError;
 use regex::Regex;
 
-pub fn get() -> Result<Vec<String>, RspError> {
+pub async fn get() -> Result<Vec<String>, RspError> {
     let body = crawl("https://www.duplichecker.com/free-proxy-list.php")?;
     dbg!(&body);
     let re = Regex::new(r"(\d{2,3}\.\d{2,3}\.\d{2,3}\.\d{2,3}:\d{2,5})")?;
@@ -18,7 +18,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_duplicheckercom() {
-        let r = get();
+        let r = get().await;
         assert!(r.is_ok());
         assert!(dbg!(r.unwrap().len()) > 0);
     }

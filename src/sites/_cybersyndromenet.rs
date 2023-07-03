@@ -2,7 +2,7 @@ use crate::netutils::crawl;
 
 use regex::Regex;
 
-pub fn get() -> Result<Vec<String>, RspError> {
+pub async fn get() -> Result<Vec<String>, RspError> {
     let mut ips = Vec::new();
     for link in cybersyndromenet_links() {
         if let Ok(body) = crawl(&link) {
@@ -17,7 +17,7 @@ pub fn get() -> Result<Vec<String>, RspError> {
 fn cybersyndromenet_links() -> Vec<String> {
     let links = vec![
         "http://www.cybersyndrome.net/pla6.html".to_string(),
-        // "http://www.cybersyndrome.net/pld6.html".to_string(),
+        "http://www.cybersyndrome.net/pld6.html".to_string(),
     ];
     links
 }
@@ -30,9 +30,15 @@ fn cybersyndromenet_ips(body: &str) -> Vec<String> {
     let re_n = Regex::new(r"var n=(\(.+?);").unwrap();
 
     if re_as.is_match(body) && re_ps.is_match(body) && re_n.is_match(body) {
-    	let s_as = re_as.find(body).unwrap().as_str().split(",");
+        let s_as = re_as.find(body).unwrap().as_str().split(",");
         // dbg!(s_as);
-        let s_ps = re_ps.captures(body).unwrap().get(1).unwrap().as_str().split(",");
+        let s_ps = re_ps
+            .captures(body)
+            .unwrap()
+            .get(1)
+            .unwrap()
+            .as_str()
+            .split(",");
         // dbg!(s_ps);
         let n = re_n.captures(body).unwrap().get(1).unwrap().as_str();
         // dbg!(n);

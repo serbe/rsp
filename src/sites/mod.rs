@@ -15,7 +15,7 @@ pub mod freeproxylistcom;
 pub mod freeproxylistnet;
 // pub mod _givemeproxycom;
 pub mod globalproxiesblogspotcom;
-pub mod httptunnelge;
+// pub mod httptunnelge;
 // pub mod _idcloakcom;
 // pub mod livesocksnet;
 // pub mod mrhinkydinkcom;
