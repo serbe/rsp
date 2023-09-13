@@ -13,7 +13,7 @@ use crate::error::RspError;
 // }
 
 pub async fn crawl(link: &str) -> Result<String, RspError> {
-    let user_agent = vec![
+    let user_agent = [
 	"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36",
 	"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0",
 	"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0",

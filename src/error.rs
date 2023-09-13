@@ -30,8 +30,8 @@ pub enum RspError {
     RequestLineToBig,
     #[error("Parse int")]
     ParseInt(#[from] std::num::ParseIntError),
-    // #[error("Netc: {0}")]
-    // FromNetc(#[from] netc::Error),
+    #[error("No found variable target like http://targethost:433/path in environment")]
+    NoTarget,
     #[error("Regex {0}")]
     FromRegex(#[from] regex::Error),
     // #[error("Reqwest: {0}")]

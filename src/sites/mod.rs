@@ -28,7 +28,7 @@ pub mod proxydailycom;
 // pub mod _proxylistdailynet;
 pub mod proxylistdownload;
 // pub mod proxylistsnet;
-pub mod proxynovacom;
+// pub mod proxynovacom;
 pub mod rmccurdycom;
 pub mod socksproxynet;
 pub mod sslproxiesorg;
